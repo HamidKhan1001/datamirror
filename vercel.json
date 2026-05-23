@@ -25,6 +25,6 @@
     ]
   },
   "framework": "nextjs",
-  "buildCommand": "cd frontend && npm run build",
-  "outputDirectory": "frontend/.next"
+  "buildCommand": "npm run build",
+  "outputDirectory": ".next"
 }
