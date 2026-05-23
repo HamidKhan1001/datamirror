@@ -58,7 +58,7 @@ export function CollectionEngine() {
     // 2. Browser parameters extraction
     await addLog("QUERYING CLIENT ENGINE METRICS...", 200);
     const userAgent = navigator.userAgent;
-    const isModern = !!(window.crypto && window.fetch && window.customElements);
+    const isModern = typeof window.fetch !== "undefined" && typeof window.customElements !== "undefined";
     await addLog(`[SUCCESS] Browser Engine checked. Platform Tier: ${isModern ? "MODERN" : "LEGACY"}`, 100);
 
     // 3. Screen and hardware capabilities

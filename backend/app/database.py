@@ -9,27 +9,32 @@ logger = logging.getLogger(__name__)
 # Configure connection pool based on database type
 connect_args = {}
 poolclass = QueuePool
+pool_size = None
+max_overflow = None
 
 if settings.database_url.startswith("sqlite"):
     connect_args = {"check_same_thread": False}
     poolclass = NullPool  # SQLite doesn't support connection pooling
-    pool_size = None
-    max_overflow = None
 else:
     # PostgreSQL / Neon configuration
     pool_size = settings.db_pool_size
     max_overflow = settings.db_max_overflow
 
-engine = create_engine(
-    settings.database_url,
-    connect_args=connect_args,
-    poolclass=poolclass,
-    pool_size=pool_size if settings.database_url.startswith("postgresql") else None,
-    max_overflow=max_overflow if settings.database_url.startswith("postgresql") else None,
-    pool_pre_ping=settings.db_pool_pre_ping,
-    pool_recycle=settings.db_pool_recycle,
-    echo=settings.log_level == "DEBUG",
-)
+# Build engine with conditional pool parameters
+engine_kwargs = {
+    "connect_args": connect_args,
+    "poolclass": poolclass,
+    "pool_pre_ping": settings.db_pool_pre_ping,
+    "echo": settings.log_level == "DEBUG",
+}
+
+# Only add pool size/overflow for non-SQLite
+if not settings.database_url.startswith("sqlite"):
+    engine_kwargs["pool_size"] = pool_size
+    engine_kwargs["max_overflow"] = max_overflow
+    engine_kwargs["pool_recycle"] = settings.db_pool_recycle
+
+engine = create_engine(settings.database_url, **engine_kwargs)
 
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 Base = declarative_base()
