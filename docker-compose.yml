@@ -1,0 +1,82 @@
+version: '3.8'
+
+services:
+  # PostgreSQL (simulates Neon)
+  postgres:
+    image: postgres:16-alpine
+    container_name: datamirror-postgres
+    environment:
+      POSTGRES_USER: datamirror
+      POSTGRES_PASSWORD: datamirror_dev_pass
+      POSTGRES_DB: datamirror
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U datamirror"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # Redis (caching layer)
+  redis:
+    image: redis:7-alpine
+    container_name: datamirror-redis
+    ports:
+      - "6379:6379"
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # Backend API
+  backend:
+    build:
+      context: .
+      dockerfile: backend/Dockerfile
+    container_name: datamirror-api
+    environment:
+      DATABASE_URL: postgresql://datamirror:datamirror_dev_pass@postgres:5432/datamirror
+      REDIS_URL: redis://redis:6379/0
+      CACHE_ENABLED: "true"
+      ENVIRONMENT: development
+      LOG_LEVEL: INFO
+      BACKEND_SECRET: local_backend_secret
+      ADMIN_SECRET_KEY: admin123
+      ANTHROPIC_API_KEY: mock_api_key
+    ports:
+      - "8000:8000"
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    command: >
+      sh -c "
+      python -m alembic upgrade head &&
+      uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
+      "
+
+  # Frontend (optional)
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: datamirror-web
+    environment:
+      NEXT_PUBLIC_BACKEND_URL: http://localhost:8000
+      BACKEND_URL: http://backend:8000
+    ports:
+      - "3000:3000"
+    depends_on:
+      - backend
+
+volumes:
+  postgres_data:

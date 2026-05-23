@@ -1,0 +1,122 @@
+@import "tailwindcss";
+
+:root {
+  --background: #050508;
+  --foreground: #f1f1f1;
+  --neon-green: #00ff88;
+  --electric-red: #ff3366;
+  --terminal-bg: rgba(8, 8, 16, 0.85);
+  --terminal-border: rgba(0, 255, 136, 0.25);
+  --terminal-font: var(--font-geist-mono), monospace;
+}
+
+body {
+  background-color: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-geist-sans), sans-serif;
+  overflow-x: hidden;
+}
+
+/* Custom retro CRT scanline overlay */
+.crt-overlay::before {
+  content: " ";
+  display: block;
+  position: fixed;
+  top: 0; left: 0; bottom: 0; right: 0;
+  background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.2) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.05), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.05));
+  z-index: 9999;
+  background-size: 100% 4px, 4px 100%;
+  pointer-events: none;
+  opacity: 0.12;
+}
+
+/* Glow utilities */
+.glow-green {
+  text-shadow: 0 0 10px rgba(0, 255, 136, 0.8), 0 0 20px rgba(0, 255, 136, 0.3);
+}
+
+.glow-red {
+  text-shadow: 0 0 10px rgba(255, 51, 102, 0.8), 0 0 20px rgba(255, 51, 102, 0.3);
+}
+
+/* Premium surveillance terminal panel */
+.terminal-panel {
+  background: var(--terminal-bg);
+  backdrop-filter: blur(16px);
+  border: 1px solid var(--terminal-border);
+  box-shadow: 0 10px 40px 0 rgba(0, 0, 0, 0.6), inset 0 0 20px rgba(0, 255, 136, 0.05);
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.terminal-panel:hover {
+  border-color: rgba(0, 255, 136, 0.45);
+  box-shadow: 0 12px 48px 0 rgba(0, 255, 136, 0.12), inset 0 0 24px rgba(0, 255, 136, 0.08);
+}
+
+.terminal-panel-red {
+  background: rgba(20, 8, 12, 0.85);
+  backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 51, 102, 0.25);
+  box-shadow: 0 10px 40px 0 rgba(0, 0, 0, 0.6), inset 0 0 20px rgba(255, 51, 102, 0.05);
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.terminal-panel-red:hover {
+  border-color: rgba(255, 51, 102, 0.45);
+  box-shadow: 0 12px 48px 0 rgba(255, 51, 102, 0.12), inset 0 0 24px rgba(255, 51, 102, 0.08);
+}
+
+/* Custom Scrollbars */
+::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+}
+::-webkit-scrollbar-track {
+  background: #050508;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(0, 255, 136, 0.2);
+  border-radius: 10px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(0, 255, 136, 0.5);
+}
+
+/* Typewriter typing animation keyframes */
+@keyframes cursor-blink {
+  0%, 100% { opacity: 0; }
+  50% { opacity: 1; }
+}
+
+.typing-cursor::after {
+  content: "█";
+  margin-left: 2px;
+  color: var(--neon-green);
+  animation: cursor-blink 1s steps(2, start) infinite;
+}
+
+/* Sweeping scan bar keyframes */
+@keyframes sweep {
+  0% { transform: translateY(-100%); }
+  100% { transform: translateY(100vh); }
+}
+
+.scanner-beam {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 5px;
+  background: linear-gradient(180deg, rgba(0, 255, 136, 0) 0%, rgba(0, 255, 136, 0.8) 50%, rgba(0, 255, 136, 0) 100%);
+  z-index: 99;
+  pointer-events: none;
+  animation: sweep 3.5s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+}
+
+/* Matrix style grid backdrops */
+.matrix-backdrop {
+  background-size: 30px 30px;
+  background-image: 
+    linear-gradient(to right, rgba(0, 255, 136, 0.03) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(0, 255, 136, 0.03) 1px, transparent 1px);
+}
