@@ -1,13 +1,13 @@
 # DISABLED - Waiting for manual trigger
-# name: CI/CD Pipeline
+# No automated CI/CD pipeline - manual deployments only
 #
+# name: CI/CD Pipeline
 # on:
 #   push:
 #     branches: [main, develop]
 #   pull_request:
 #     branches: [main, develop]
-
-jobs:
+# jobs:
   backend-test:
     runs-on: ubuntu-latest
     services:

@@ -1,29 +1,4 @@
 {
-  "projectSettings": {
-    "createdAt": 1705861200000,
-    "environment": [
-      {
-        "key": "BACKEND_URL",
-        "value": "https://datamirror-backend.railway.app",
-        "target": ["preview", "production"]
-      },
-      {
-        "key": "NEXT_PUBLIC_APP_NAME",
-        "value": "DataMirror",
-        "target": ["preview", "production"]
-      },
-      {
-        "key": "NEXT_PUBLIC_ENABLE_TRACKING",
-        "value": "true",
-        "target": ["preview", "production"]
-      },
-      {
-        "key": "NEXT_PUBLIC_ENABLE_AI_ANALYSIS",
-        "value": "true",
-        "target": ["preview", "production"]
-      }
-    ]
-  },
   "framework": "nextjs",
   "buildCommand": "npm run build",
   "outputDirectory": ".next"
