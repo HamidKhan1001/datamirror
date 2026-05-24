@@ -3,8 +3,8 @@ from pydantic_settings import BaseSettings
 from pydantic import Field
 
 class Settings(BaseSettings):
-    # API Configuration
-    anthropic_api_key: str = Field(default="mock_api_key", validation_alias="ANTHROPIC_API_KEY")
+    # API Configuration (optional - local generation works without them)
+    gemini_api_key: str = Field(default="", validation_alias="GEMINI_API_KEY")
     backend_secret: str = Field(default="local_backend_secret", validation_alias="BACKEND_SECRET")
     admin_secret_key: str = Field(default="admin123", validation_alias="ADMIN_SECRET_KEY")
     allowed_origins: str = Field(default="http://localhost:3000,http://localhost:3001", validation_alias="ALLOWED_ORIGINS")

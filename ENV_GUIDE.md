@@ -1,11 +1,22 @@
 # Environment Configuration Guide
 
+## ⭐ Important: No API Key Required
+
+**DataMirror works 100% FREE without any API keys!**
+
+The application generates AI profiling responses locally in-memory with zero external API calls. This is optimal for portfolio projects and education.
+
+### Optional: Add Google Gemini (Also Free Tier Available)
+If you want to enhance AI analysis with Google Gemini, you can add the key anytime. Otherwise, local generation is used automatically.
+
+---
+
 ## Backend Environment Variables
 
 ### Production (Neon PostgreSQL)
 ```env
 # Application
-ANTHROPIC_API_KEY=your_anthropic_api_key
+GEMINI_API_KEY=                           # Leave empty for local generation OR add your free tier key
 BACKEND_SECRET=production_backend_secret
 ADMIN_SECRET_KEY=production_admin_key
 
@@ -38,8 +49,8 @@ REQUEST_TIMEOUT=30
 
 ### Local Development (SQLite)
 ```env
-# Application
-ANTHROPIC_API_KEY=mock_api_key
+# Application (NO API KEY NEEDED - Uses Local Generation)
+GEMINI_API_KEY=                           # Optional: Leave empty for local mode
 BACKEND_SECRET=local_backend_secret
 ADMIN_SECRET_KEY=admin123
 
@@ -127,7 +138,7 @@ Set these in the platform's environment variables:
 
 ```
 DATABASE_URL = postgresql://neondb_owner:npg_GOz2Hnscer9N@ep-green-voice-aqkoipuu-pooler.c-8.us-east-1.aws.neon.tech/neondb?sslmode=require&channel_binding=require
-ANTHROPIC_API_KEY = your_api_key
+GEMINI_API_KEY =                          # Optional - leave empty for local generation
 BACKEND_SECRET = production_secret
 ADMIN_SECRET_KEY = admin_key
 ALLOWED_ORIGINS = https://datamirror.vercel.app
@@ -144,7 +155,9 @@ RATE_LIMIT_PER_MINUTE = 60
 |----------|---------|----------|---------|
 | BACKEND_URL | ✗ | ✓ | Frontend API endpoint |
 | DATABASE_URL | ✓ | ✗ | Neon PostgreSQL connection |
-| ANTHROPIC_API_KEY | ✓ | ✗ | Claude AI access |
+| GEMINI_API_KEY | ✓ (optional) | ✗ | Google Gemini (optional, free tier) |
 | BACKEND_SECRET | ✓ | ✓ | Secret key (keep safe) |
 | ADMIN_SECRET_KEY | ✓ | ✓ | Admin operations key |
 | NEXT_PUBLIC_* | ✗ | ✓ | Public frontend config |
+
+**Note:** The app works **100% FREE** without GEMINI_API_KEY. Local in-memory generation is used automatically.

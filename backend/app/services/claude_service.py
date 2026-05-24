@@ -4,6 +4,15 @@ from app.schemas.browser_profile import AnalysisRequest
 from app.schemas.ai_response import AIAnalysisResponse, AdProfile, RecommendationBucket, DataValuation, DarkPattern, ProtectionAction
 
 class ClaudeService:
+    """
+    AI Profiling Service - Generates detailed privacy risk profiles.
+    
+    NOTE: This service generates responses LOCALLY in-memory for FREE.
+    No API calls are made by default. 
+    
+    Optional: Set GEMINI_API_KEY environment variable to use Google Gemini for enhanced analysis.
+    Without the key, local generation is used automatically.
+    """
     def __init__(self) -> None:
         pass
 
